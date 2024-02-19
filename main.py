@@ -65,11 +65,9 @@ class TemperatureAnalytics:
         plt.xticks([])
         plt.show()
 
-
-
-
     def plot_temp_for_day(self, year, month, day):
-        selected_day_data = self.data[(self.data['rok'] == year) & (self.data['měsíc'] == month) & (self.data['den'] == day)]
+        selected_day_data = self.data[
+            (self.data['rok'] == year) & (self.data['měsíc'] == month) & (self.data['den'] == day)]
 
         if selected_day_data.empty:
             print("Pro zadaný den nejsou k dispozici žádná data.")
@@ -90,61 +88,79 @@ class TemperatureAnalytics:
 
 def main():
     temperature_analytics = TemperatureAnalytics(temperature_data)
-    vybrano = vyber()
-    if vybrano == "1":
-        rok = input("Zadej Rok:")
-        average_temp = temperature_analytics.get_average_temperature(int(rok))
-        print(f"Průměrná teplota v roce {rok}: {average_temp:.1f}°C")
-    elif vybrano == "2":
-        rok = input("Zadej Rok:")
-        max_temp, date_of_max_temp = temperature_analytics.get_max_temperature(int(rok))
-        min_temp, date_of_min_temp = temperature_analytics.get_min_temperature(int(rok))
-        print(
-            f"Maximální teplota v roce {rok}: {max_temp:}°C, datum: {date_of_max_temp['den']}.{date_of_max_temp['měsíc']}.{date_of_max_temp['rok']} \n"
-            f"Minimální teplota v roce {rok}: {min_temp:}°C, datum: {date_of_min_temp['den']}.{date_of_min_temp['měsíc']}.{date_of_min_temp['rok']} ")
 
-    elif vybrano == "3":
-        rok = input("Zadej Rok:")
-        monthly_averages = temperature_analytics.get_monthly_averages(int(rok))
-        print(f"Mesicni prumer pro rok {rok} jsou:")
-        print(f"{monthly_averages}")
-    elif vybrano == "4":
-        rok1 = input("Zadej počáteční rok: ")
-        rok2 = input("Zadej konečný rok: ")
-        temperature_analytics.plot_anual_temperature_averages(int(rok1), int(rok2))
-    elif vybrano == "5":
-        print("5")
-    elif vybrano == "6":
-        print("6")
-    elif vybrano == "7":
-        rok = input("Zadej rok: ")
-        temperature_analytics.plot_yearly_temp(int(rok))
-    elif vybrano == "8":
-        rok = input("Zadej rok: ")
-        měsíc = input("Zadej měsíc: ")
-        den = input("Zadej den: ")
-        temperature_analytics.plot_temp_for_day(int(rok), int(měsíc), int(den))
-    elif vybrano == "9":
-        print("9")
-    elif vybrano == "0":
-        print("0")
-    else:
-        print("ERROR")
+    while True:
+        print("\n")
+
+        vybrano = vyber()
+
+        if vybrano == "1":
+            rok = year_input(1)
+            average_temp = temperature_analytics.get_average_temperature(int(rok))
+            print(f"Průměrná teplota v roce {rok}: {average_temp:.1f}°C")
+        elif vybrano == "2":
+            rok = year_input(1)
+            max_temp, date_of_max_temp = temperature_analytics.get_max_temperature(int(rok))
+            min_temp, date_of_min_temp = temperature_analytics.get_min_temperature(int(rok))
+            print(
+                f"Maximální teplota v roce {rok}: {max_temp:}°C, datum: {date_of_max_temp['den']}.{date_of_max_temp['měsíc']}.{date_of_max_temp['rok']} \n"
+                f"Minimální teplota v roce {rok}: {min_temp:}°C, datum: {date_of_min_temp['den']}.{date_of_min_temp['měsíc']}.{date_of_min_temp['rok']} ")
+
+        elif vybrano == "3":
+            rok = year_input(1)
+            monthly_averages = temperature_analytics.get_monthly_averages(int(rok))
+            print(f"Mesicni prumer pro rok {rok} jsou:")
+            print(f"{monthly_averages}")
+        elif vybrano == "4":
+            rok1 = year_input(2)
+            rok2 = year_input(3)
+            temperature_analytics.plot_anual_temperature_averages(int(rok1), int(rok2))
+
+        elif vybrano == "5":
+            rok = year_input(1)
+            temperature_analytics.plot_yearly_temp(int(rok))
+        elif vybrano == "6":
+            rok = year_input(1)
+            měsíc = input("Zadej měsíc: ")
+            den = input("Zadej den: ")
+            temperature_analytics.plot_temp_for_day(int(rok), int(měsíc), int(den))
+        elif vybrano == "0":
+            return
+
+        else:
+            print("Nebylo zadano číslo v rozsahu od 1 do 7")
 
 
 def vyber():
-    print("1 - Zobrazit průměrnou teplotu pro zadaný rok")
-    print("2 - Zobrazit minimální a maximální teplotu pro zadaný rok")
-    print("3 - Zobrazit měsíční průměry pro zadaný rok")
-    print("4 - Vykreslit průměrnou teploty mezi lety")
-    print("5 - Analyzovat sezónní změny")
-    print("6 - Detekovat teplotní anomálie")
-    print("7 - Vykreslit roční teploty")
-    print("8 - Vykreslit denní teplotní trendy")
-    print("9 - Vykreslit minimální a maximální teploty pro konkrétní den")
-    print("0 - Konec")
-    vybrano = input("Zvolte akci:")
-    return vybrano
+    while True:
+        print("1 - Zobrazit průměrnou teplotu pro zadaný rok")
+        print("2 - Zobrazit minimální a maximální teplotu pro zadaný rok")
+        print("3 - Zobrazit měsíční průměry pro zadaný rok")
+        print("4 - Vykreslit průměrnou teploty mezi lety")
+        print("5 - Vykreslit roční teploty")
+        print("6 - Vykreslit denní teplotní trendy")
+        print("0 - Konec")
+        vybrano = input("Zvolte akci:")
+        try:
+            vybrano = int(vybrano)
+            if 0 <= vybrano <= 6:
+                return str(vybrano)
+            else:
+                print("Zadal jsi číslo mimo rozsah.")
+        except ValueError:
+            print("Nezadal jsi platné celé číslo.")
+
+def year_input(volba):
+    num = 0
+    while(True):
+        if volba == 1:
+            num = input("Zadej Rok:")
+        elif volba == 2:
+            num = input("Zadej počáteční rok: ")
+        elif volba == 3:
+            num = input("Zadej konečný rok: ")
+        if 2023 > int(num) >= 1775:
+            return num
 
 
 if __name__ == '__main__':
