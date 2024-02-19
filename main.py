@@ -52,6 +52,24 @@ class TemperatureAnalytics:
         plt.show()
 
 
+    def plot_temp_for_day(self, year, month, day):
+        selected_day_data = self.data[(self.data['rok'] == year) & (self.data['měsíc'] == month) & (self.data['den'] == day)]
+
+        if selected_day_data.empty:
+            print("Pro zadaný den nejsou k dispozici žádná data.")
+            return
+        plt.plot(selected_day_data['TMI'], label='Min Teplota', marker='o', linestyle='-', color='b')
+        plt.plot(selected_day_data['T-AVG'], label='Avg Teplota', marker='o', linestyle='-', color='black')
+        plt.plot(selected_day_data['TMA'], label='Max Teplota', marker='o', linestyle='-', color='r')
+
+        # Přidání popisků os a legendy
+        plt.xlabel(f'{day}.{month}.{year}')
+        plt.ylabel('Teplota (°C)')
+        plt.title('Maximální, minimální a průměrná teplota pro zadaný den')
+        plt.legend()
+        plt.grid(True)
+        plt.xticks([])
+        plt.show()
 
 
 def main():
@@ -85,7 +103,10 @@ def main():
     elif vybrano == "7":
         print("7")
     elif vybrano == "8":
-        print("8")
+        rok = input("Zadej rok:")
+        měsíc = input("Zadej měsíc:")
+        den = input("Zadej den:")
+        temperature_analytics.plot_temp_for_day(int(rok), int(měsíc), int(den))
     elif vybrano == "9":
         print("9")
     elif vybrano == "0":
