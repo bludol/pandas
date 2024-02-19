@@ -51,6 +51,22 @@ class TemperatureAnalytics:
         plt.grid(True)
         plt.show()
 
+    def plot_yearly_temp(self, year):
+        # Filtrujeme data pro zadaný rok
+        year_data = self.data[self.data['rok'] == year]
+        plt.figure(figsize=(10, 6))
+        plt.plot(year_data['den'].index, year_data['TMA'].values, marker='o', linestyle='-', color='r')
+        plt.plot(year_data['den'].index, year_data['T-AVG'].values, marker='o', linestyle='-', color='black')
+        plt.plot(year_data['den'].index, year_data['TMI'].values, marker='o', linestyle='-', color='b')
+        plt.xlabel('Měsíc')
+        plt.ylabel('Průměrná teplota (°C)')
+        plt.title(f'Průměrná teplota pro rok {year}')
+        plt.grid(True)
+        plt.xticks([])
+        plt.show()
+
+
+
 
     def plot_temp_for_day(self, year, month, day):
         selected_day_data = self.data[(self.data['rok'] == year) & (self.data['měsíc'] == month) & (self.data['den'] == day)]
@@ -101,11 +117,12 @@ def main():
     elif vybrano == "6":
         print("6")
     elif vybrano == "7":
-        print("7")
+        rok = input("Zadej rok: ")
+        temperature_analytics.plot_yearly_temp(int(rok))
     elif vybrano == "8":
-        rok = input("Zadej rok:")
-        měsíc = input("Zadej měsíc:")
-        den = input("Zadej den:")
+        rok = input("Zadej rok: ")
+        měsíc = input("Zadej měsíc: ")
+        den = input("Zadej den: ")
         temperature_analytics.plot_temp_for_day(int(rok), int(měsíc), int(den))
     elif vybrano == "9":
         print("9")
@@ -122,7 +139,7 @@ def vyber():
     print("4 - Vykreslit průměrnou teploty mezi lety")
     print("5 - Analyzovat sezónní změny")
     print("6 - Detekovat teplotní anomálie")
-    print("7 - Vykreslit průměrné roční teploty")
+    print("7 - Vykreslit roční teploty")
     print("8 - Vykreslit denní teplotní trendy")
     print("9 - Vykreslit minimální a maximální teploty pro konkrétní den")
     print("0 - Konec")
